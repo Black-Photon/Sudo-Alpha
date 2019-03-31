@@ -7,16 +7,21 @@ object Main extends App {
     print(" > ")
     val input = scala.io.StdIn.readLine()
     val inputList = separateToWords(input)
-    for (command <- commandList) {
-      if(inputList.head == command.name) {
-        try {
-          command.command(inputList.tail)
-        } catch {
-          case e: InvalidCommandException => {
-            println(e.getMessage)
-          }
-        }
+
+    val commandMatch = commandList.filter(command => inputList.head == command.name)
+
+    if(commandMatch.isEmpty) {
+      println("Command not found")
+    } else if(commandMatch.length == 1) {
+      val command = commandMatch.head
+
+      try {
+        command.command(inputList.tail)
+      } catch {
+        case e: InvalidCommandException => println(e.getMessage)
       }
+    } else {
+      throw new RuntimeException("Multiple commands of same name found")
     }
   }
 
