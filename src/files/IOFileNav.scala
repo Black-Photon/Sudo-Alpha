@@ -18,9 +18,23 @@ object IOFileNav extends IOClass {
     if(files == null) throw new NotADirectoryException(currentDirectory + relDir + " is an invalid directory")
 
     for(file <- files) {
-      list = file.getPath.substring(absolutePath.length) :: list
+      list = file.getPath.substring(absolutePath.length + currentDirectory.length + relDir.length).replace("/", "") :: list
     }
     list
+  }
+
+  def cd(relDir: String): Unit = {
+    if(!filterDir(currentDirectory+relDir)) {
+      throw new NotADirectoryException("No directory above ship")
+    }
+
+    try {
+      ls(relDir)
+    } catch {
+      case e: Exception => throw e
+    }
+
+    currentDirectory = simplify(currentDirectory + relDir + '/')
   }
 
   def filterDir(directory: String): Boolean = {
@@ -29,7 +43,10 @@ object IOFileNav extends IOClass {
 
     for(letter <- directory.toCharArray) {
       letter match {
-        case '/' => depth = depth + 1
+        case '/' => {
+          depth = depth + 1
+          dot = false
+        }
         case '.' => {
           if (dot) {
             // Reducing by 2 as must have a / before
@@ -43,4 +60,12 @@ object IOFileNav extends IOClass {
 
     true
   }
+
+  def simplify(path: String): String = {
+    // Magic RegEx! Deletes /dir/..
+    val s = path.replaceAll("\\/[^\\/]*\\/\\.\\.\\/", "/")
+    if(s.contains("/../")) simplify(s)
+    else s
+  }
+
 }

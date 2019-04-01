@@ -1,5 +1,5 @@
 import files.IOFileNav
 
 object Testing extends App {
-  print(IOFileNav.ls(""))
+  print(IOFileNav.simplify("ship/dir/..thingy"))
 }
