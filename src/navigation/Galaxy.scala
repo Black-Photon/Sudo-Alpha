@@ -1,0 +1,5 @@
+package navigation
+
+object Galaxy {
+
+}

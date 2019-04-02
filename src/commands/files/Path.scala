@@ -1,5 +1,6 @@
-package commands
+package commands.files
 
+import commands.Command
 import files.IOFileNav
 
 object Path extends Command(

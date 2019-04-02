@@ -1,6 +1,7 @@
-package commands
+package commands.files
 
-import files._
+import commands.Command
+import files.{IOFileNav, NotADirectoryException}
 
 object Ls extends Command (
   "ls",
