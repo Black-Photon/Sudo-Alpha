@@ -1,4 +1,6 @@
-import commands.Commands._
+package core
+
+import commands.Commands.commandList
 import commands.InvalidCommandException
 
 object Main extends App {
